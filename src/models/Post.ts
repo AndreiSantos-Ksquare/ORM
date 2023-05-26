@@ -6,6 +6,7 @@ import {
   DataTypes,
   Sequelize,
 } from "sequelize";
+import Comment from "./Comment";
 
 class Post extends Model<
   InferAttributes<Post>,
@@ -16,7 +17,7 @@ class Post extends Model<
   declare userId: number;
 }
 
-export const setupPost = (sequelize: Sequelize) => {
+export const setupPost = async (sequelize: Sequelize) => {
   Post.init(
     {
       id: {
@@ -33,6 +34,10 @@ export const setupPost = (sequelize: Sequelize) => {
       paranoid: true,
     }
   );
+
+  await Post.sync();
+
+  await Post.hasMany(Comment);
 };
 
 export default Post;
